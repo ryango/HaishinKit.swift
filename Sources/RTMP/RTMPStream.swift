@@ -611,12 +611,11 @@ extension RTMPStream: RTMPMuxerDelegate {
             return
         }
         let type: FLVTagType = .video
-        OSAtomicOr32Barrier(1, &mixer.videoIO.encoder.locked)
         let length: Int = rtmpConnection.socket.doOutput(chunk: RTMPChunk(
             type: videoWasSent ? .one : .zero,
             streamId: type.streamId,
             message: RTMPVideoMessage(streamId: id, timestamp: UInt32(videoTimestamp), payload: buffer)
-        ), locked: &mixer.videoIO.encoder.locked)
+        ), locked: nil)
         if !videoWasSent {
             logger.debug("first video frame was sent")
         }
