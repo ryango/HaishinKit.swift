@@ -24,6 +24,7 @@ public final class H264Encoder {
         #endif
         case maxKeyFrameIntervalDuration
         case scalingMode
+        case invalidate
 
         public var keyPath: AnyKeyPath {
             switch self {
@@ -45,6 +46,8 @@ public final class H264Encoder {
                 return \H264Encoder.scalingMode
             case .profileLevel:
                 return \H264Encoder.profileLevel
+            case .invalidate:
+              return \H264Encoder.invalidate
             }
         }
     }
@@ -133,6 +136,11 @@ public final class H264Encoder {
             invalidateSession = true
         }
     }
+  var invalidate: Bool = false {
+    didSet {
+      invalidateSession = true
+    }
+  }
     var locked: UInt32 = 0
     var lockQueue = DispatchQueue(label: "com.haishinkit.HaishinKit.H264Encoder.lock")
     var expectedFPS: Float64 = AVMixer.defaultFPS {
